@@ -1,0 +1,66 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        user:
+            persistence:
+                driver: orm
+                model: App\Entity\User
+                provider: ~
+                finder: ~
+            properties:
+                id: ~
+                name: ~
+                surname: ~
+                email: ~
+        rent:
+            persistence:
+                driver: orm
+                model: App\Entity\Rent
+                provider: ~
+                finder: ~
+            properties:
+                id: ~
+                rentDate: ~
+                returnDate: ~
+                user: ~
+        book:
+            persistence:
+                driver: orm
+                model: App\Entity\Book
+                provider: ~
+                finder: ~
+            properties:
+                id: ~
+                name: ~
+                isActive: ~
+                library:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        name:
+                            type: text
+                        city:
+                            type: text
+                        street:
+                            type: text
+        library:
+            persistence:
+                driver: orm
+                model: App\Entity\Library
+                provider: ~
+                finder: ~
+            properties:
+                id: ~
+                name: ~
+                city: ~
+                street: ~
+                books:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        name:
+                            type: text
