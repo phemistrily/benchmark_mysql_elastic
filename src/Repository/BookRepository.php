@@ -55,4 +55,13 @@ class BookRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findIdsByLimit($limit = 10)
+    {
+        return $this->createQueryBuilder('b')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

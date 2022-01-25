@@ -41,6 +41,16 @@ class Book
     private $rents;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Orders::class, inversedBy="books")
+     */
+    private $orders;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Genere::class, inversedBy="books")
+     */
+    private $genere;
+
+    /**
      * Book constructor.
      * @param $id
      * @param $name
@@ -122,6 +132,30 @@ class Book
                 $rent->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrders(): ?Orders
+    {
+        return $this->orders;
+    }
+
+    public function setOrders(?Orders $orders): self
+    {
+        $this->orders = $orders;
+
+        return $this;
+    }
+
+    public function getGenere(): ?Genere
+    {
+        return $this->genere;
+    }
+
+    public function setGenere(?Genere $genere): self
+    {
+        $this->genere = $genere;
 
         return $this;
     }

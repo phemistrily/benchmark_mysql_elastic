@@ -25,5 +25,10 @@ services:
         public: true
         arguments:
             - '@fos_elastica.finder.book'
+    App\Controller\IndexElasticController:
+        tags: [ 'controller.service_arguments' ]
+        public: true
+        arguments:
+            - '@fos_elastica.finder.book'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
