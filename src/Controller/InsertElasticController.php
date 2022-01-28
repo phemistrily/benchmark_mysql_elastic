@@ -2,29 +2,41 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use FOS\ElasticaBundle\Persister\ObjectPersisterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IndexElasticController extends AbstractController
+class InsertElasticController extends AbstractController
 {
-    private $finder;
-
-    public function __construct(PaginatedFinderInterface $finder)
-    {
-        $this->finder = $finder;
+    public function __construct(
+//        private PaginatedFinderInterface $finder,
+        private ObjectPersisterInterface $post,
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
     #[Route('/insert_elastic', name: 'insert_elastic')]
-    public function index(BookRepository $bookRepository): Response
+    public function index(): Response
     {
+        /** @var Factory $faker - create faker */
+        $faker = Factory::create();
+        for ($i = 0; $i < 10; $i++) {
+            $user[$i] = new User($faker->firstName, $faker->lastName, $faker->email);
+        }
         $startElastic10 = microtime();
-        $this->finder->findRaw('', 10);
+        $this->post->insertMany($user);
         $endElastic10 = microtime();
         $startMysql10 = microtime();
-        $bookRepository->findIdsByLimit(10);
+        for ($i = 0; $i < 10; $i++) {
+            $this->entityManager->persist($user[$i]);
+        }
+        $this->entityManager->flush();
         $endMysql10 = microtime();
 
         $startElastic10 = explode(' ', $startElastic10);
@@ -39,11 +51,16 @@ class IndexElasticController extends AbstractController
 //        dump($timeElastic10);
 //        dump($timeSql10);
 
+        for ($i = 0; $i < 100; $i++) {
+            $user[$i] = new User($faker->firstName, $faker->lastName, $faker->email);
+        }
         $startElastic100 = microtime();
-        $this->finder->findRaw('', 100);
+        $this->post->insertMany($user);
         $endElastic100 = microtime();
         $startMysql100 = microtime();
-        $bookRepository->findIdsByLimit(100);
+        for ($i = 0; $i < 100; $i++) {
+            $this->entityManager->persist($user[$i]);
+        }
         $endMysql100 = microtime();
 
         $startElastic100 = explode(' ', $startElastic100);
@@ -58,11 +75,16 @@ class IndexElasticController extends AbstractController
 //        dump($timeElastic100);
 //        dump($timeSql100);
 
+        for ($i = 0; $i < 1000; $i++) {
+            $user[$i] = new User($faker->firstName, $faker->lastName, $faker->email);
+        }
         $startElastic1000 = microtime();
-        $this->finder->findRaw('', 1000);
+        $this->post->insertMany($user);
         $endElastic1000 = microtime();
         $startMysql1000 = microtime();
-        $bookRepository->findIdsByLimit(1000);
+        for ($i = 0; $i < 1000; $i++) {
+            $this->entityManager->persist($user[$i]);
+        }
         $endMysql1000 = microtime();
 
         $startElastic1000 = explode(' ', $startElastic1000);
@@ -77,12 +99,16 @@ class IndexElasticController extends AbstractController
 //        dump($timeElastic1000);
 //        dump($timeSql1000);
 
-
+        for ($i = 0; $i < 10000; $i++) {
+            $user[$i] = new User($faker->firstName, $faker->lastName, $faker->email);
+        }
         $startElastic10000 = microtime();
-        $this->finder->findRaw('', 10000);
+        $this->post->insertMany($user);
         $endElastic10000 = microtime();
         $startMysql10000 = microtime();
-        $bookRepository->findIdsByLimit(10000);
+        for ($i = 0; $i < 10000; $i++) {
+            $this->entityManager->persist($user[$i]);
+        }
         $endMysql10000 = microtime();
 
         $startElastic10000 = explode(' ', $startElastic10000);
@@ -97,7 +123,7 @@ class IndexElasticController extends AbstractController
 //        dump($timeElastic10000);
 //        dump($timeSql10000);
 
-        return $this->render('index_elastic/index.html.twig', [
+        return $this->render('insert_elastic/index.html.twig', [
             'controller_name' => 'IndexController',
             'data' => [
                 '10elastic' => $timeElastic10,

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dealers{% endblock %}
+
+{% block body %}
+    <h1>Dealers</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dealer.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ dealer.name }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ dealer.city }}</td>
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td>{{ dealer.street }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('dealers_index') }}">back to list</a>
+
+    <a href="{{ path('dealers_edit', {'id': dealer.id}) }}">edit</a>
+
+    {{ include('dealers/_delete_form.html.twig') }}
+{% endblock %}

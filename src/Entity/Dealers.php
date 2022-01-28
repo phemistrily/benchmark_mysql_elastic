@@ -39,8 +39,11 @@ class Dealers
      */
     private $street;
 
-    public function __construct()
+    public function __construct($name, $city, $street)
     {
+        $this->name = $name;
+        $this->city = $city;
+        $this->street = $street;
         $this->orders = new ArrayCollection();
     }
 

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Dealers{% endblock %}
+
+{% block body %}
+    <h1>Edit Dealers</h1>
+
+    {{ include('dealers/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('dealers_index') }}">back to list</a>
+
+    {{ include('dealers/_delete_form.html.twig') }}
+{% endblock %}

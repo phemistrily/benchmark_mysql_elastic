@@ -56,11 +56,13 @@ class Book
      * @param $name
      * @param $library
      */
-    public function __construct($name, $library)
+    public function __construct($name, $library, $genere, $order)
     {
         $this->name = $name;
         $this->library = $library;
         $this->isActive = true;
+        $this->orders = $order;
+        $this->genere = $genere;
         $this->rents = new ArrayCollection();
     }
 

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Dealers{% endblock %}
+
+{% block body %}
+    <h1>Create new Dealers</h1>
+
+    {{ include('dealers/_form.html.twig') }}
+
+    <a href="{{ path('dealers_index') }}">back to list</a>
+{% endblock %}

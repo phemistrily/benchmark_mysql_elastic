@@ -29,8 +29,9 @@ class Genere
      */
     private $books;
 
-    public function __construct()
+    public function __construct($name)
     {
+        $this->name = $name;
         $this->books = new ArrayCollection();
     }
 
