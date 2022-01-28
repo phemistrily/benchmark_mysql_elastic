@@ -41,6 +41,16 @@ class AppFixtures extends Fixture
         $genere[7] = new Genere("Psychologiczna");
         $genere[8] = new Genere("Wiersze");
         $genere[9] = new Genere("Historyczne");
+        $manager->persist($genere[0]);
+        $manager->persist($genere[1]);
+        $manager->persist($genere[2]);
+        $manager->persist($genere[3]);
+        $manager->persist($genere[4]);
+        $manager->persist($genere[5]);
+        $manager->persist($genere[6]);
+        $manager->persist($genere[7]);
+        $manager->persist($genere[8]);
+        $manager->persist($genere[9]);
 
         /** create books */
         for ($i = 0; $i < 1000000; $i++) {

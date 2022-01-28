@@ -24,7 +24,6 @@ class DeleteElasticController extends AbstractController
     #[Route('/delete_elastic', name: 'delete_elastic')]
     public function index(): Response
     {
-        /** @var Factory $faker - create faker */
         $data = $this->finder->find('', 10);
         if (count($data) < 10) {
             die ('brak danych - uzupełnij dane');
@@ -67,6 +66,7 @@ class DeleteElasticController extends AbstractController
         foreach ($data as $item) {
             $this->entityManager->remove($item);
         }
+        $this->entityManager->flush();
         $endMysql100 = microtime();
 
         $startElastic100 = explode(' ', $startElastic100);
@@ -94,6 +94,7 @@ class DeleteElasticController extends AbstractController
         foreach ($data as $item) {
             $this->entityManager->remove($item);
         }
+        $this->entityManager->flush();
         $endMysql1000 = microtime();
 
         $startElastic1000 = explode(' ', $startElastic1000);
@@ -121,6 +122,7 @@ class DeleteElasticController extends AbstractController
         foreach ($data as $item) {
             $this->entityManager->remove($item);
         }
+        $this->entityManager->flush();
         $endMysql10000 = microtime();
 
         $startElastic10000 = explode(' ', $startElastic10000);
@@ -135,7 +137,7 @@ class DeleteElasticController extends AbstractController
 //        dump($timeElastic10000);
 //        dump($timeSql10000);
 
-        return $this->render('insert_elastic/index.html.twig', [
+        return $this->render('delete_elastic/index.html.twig', [
             'controller_name' => 'IndexController',
             'data' => [
                 '10elastic' => $timeElastic10,

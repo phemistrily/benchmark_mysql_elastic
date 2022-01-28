@@ -47,6 +47,7 @@ services:
         public: true
         arguments:
             - '@fos_elastica.finder.dealers'
+            - '@fos_elastica.object_persister.dealers'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

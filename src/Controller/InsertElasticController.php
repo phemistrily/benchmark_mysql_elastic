@@ -61,6 +61,7 @@ class InsertElasticController extends AbstractController
         for ($i = 0; $i < 100; $i++) {
             $this->entityManager->persist($user[$i]);
         }
+        $this->entityManager->flush();
         $endMysql100 = microtime();
 
         $startElastic100 = explode(' ', $startElastic100);
@@ -85,6 +86,7 @@ class InsertElasticController extends AbstractController
         for ($i = 0; $i < 1000; $i++) {
             $this->entityManager->persist($user[$i]);
         }
+        $this->entityManager->flush();
         $endMysql1000 = microtime();
 
         $startElastic1000 = explode(' ', $startElastic1000);
@@ -109,6 +111,7 @@ class InsertElasticController extends AbstractController
         for ($i = 0; $i < 10000; $i++) {
             $this->entityManager->persist($user[$i]);
         }
+        $this->entityManager->flush();
         $endMysql10000 = microtime();
 
         $startElastic10000 = explode(' ', $startElastic10000);

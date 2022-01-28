@@ -24,7 +24,7 @@ class IndexElasticController extends AbstractController
         $this->finder->findRaw('', 10);
         $endElastic10 = microtime();
         $startMysql10 = microtime();
-        $d = $bookRepository->findIdsByLimit(10);
+        $bookRepository->findIdsByLimit(10);
         $endMysql10 = microtime();
 
         $startElastic10 = explode(' ', $startElastic10);

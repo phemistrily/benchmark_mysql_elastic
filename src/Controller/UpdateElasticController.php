@@ -2,29 +2,44 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use FOS\ElasticaBundle\Persister\ObjectPersisterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UpdateElasticController extends AbstractController
 {
-    private $finder;
-
-    public function __construct(PaginatedFinderInterface $finder)
-    {
-        $this->finder = $finder;
+    public function __construct(
+        private PaginatedFinderInterface $finder,
+        private ObjectPersisterInterface $post,
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
     #[Route('/update_elastic', name: 'update_elastic')]
-    public function index(BookRepository $bookRepository): Response
+    public function index(): Response
     {
+        /** @var Factory $faker - create faker */
+        $faker = Factory::create();
+        $data = $this->finder->find('', 10);
+        if (count($data) < 10) {
+            die ('brak danych - uzupełnij dane');
+        }
+        foreach ($data as $item) {
+            $item->setName($faker->name. '1');
+        }
         $startElastic10 = microtime();
-        $this->finder->findRaw('', 10);
+        foreach ($data as $item) {
+            $this->post->replaceOne($item);
+        }
         $endElastic10 = microtime();
         $startMysql10 = microtime();
-        $bookRepository->findIdsByLimit(10);
+        $this->entityManager->flush();
         $endMysql10 = microtime();
 
         $startElastic10 = explode(' ', $startElastic10);
@@ -39,11 +54,21 @@ class UpdateElasticController extends AbstractController
 //        dump($timeElastic10);
 //        dump($timeSql10);
 
+
+        $data = $this->finder->find('', 100);
+        if (count($data) < 100) {
+            die ('brak danych - uzupełnij dane');
+        }
+        foreach ($data as $item) {
+            $item->setName($faker->name. '2');
+        }
         $startElastic100 = microtime();
-        $this->finder->findRaw('', 100);
+        foreach ($data as $item) {
+            $this->post->replaceOne($item);
+        }
         $endElastic100 = microtime();
         $startMysql100 = microtime();
-        $bookRepository->findIdsByLimit(100);
+        $this->entityManager->flush();
         $endMysql100 = microtime();
 
         $startElastic100 = explode(' ', $startElastic100);
@@ -58,11 +83,20 @@ class UpdateElasticController extends AbstractController
 //        dump($timeElastic100);
 //        dump($timeSql100);
 
+        $data = $this->finder->find('', 1000);
+        if (count($data) < 1000) {
+            die ('brak danych - uzupełnij dane');
+        }
+        foreach ($data as $item) {
+            $item->setName($faker->name. '3');
+        }
         $startElastic1000 = microtime();
-        $this->finder->findRaw('', 1000);
+        foreach ($data as $item) {
+            $this->post->replaceOne($item);
+        }
         $endElastic1000 = microtime();
         $startMysql1000 = microtime();
-        $bookRepository->findIdsByLimit(1000);
+        $this->entityManager->flush();
         $endMysql1000 = microtime();
 
         $startElastic1000 = explode(' ', $startElastic1000);
@@ -77,12 +111,21 @@ class UpdateElasticController extends AbstractController
 //        dump($timeElastic1000);
 //        dump($timeSql1000);
 
-
+        $data = $this->finder->find('', 10000);
+        if (count($data) < 10000) {
+            die ('brak danych - uzupełnij dane');
+        }
+        foreach ($data as $item) {
+            $item->setName($faker->name. '4');
+        }
         $startElastic10000 = microtime();
-        $this->finder->findRaw('', 10000);
+        foreach ($data as $item) {
+            $this->post->replaceOne($item);
+        }
         $endElastic10000 = microtime();
         $startMysql10000 = microtime();
-        $bookRepository->findIdsByLimit(10000);
+
+        $this->entityManager->flush();
         $endMysql10000 = microtime();
 
         $startElastic10000 = explode(' ', $startElastic10000);
@@ -97,7 +140,7 @@ class UpdateElasticController extends AbstractController
 //        dump($timeElastic10000);
 //        dump($timeSql10000);
 
-        return $this->render('insert_elastic/index.html.twig', [
+        return $this->render('update_elastic/index.html.twig', [
             'controller_name' => 'IndexController',
             'data' => [
                 '10elastic' => $timeElastic10,
