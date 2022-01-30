@@ -25,6 +25,35 @@ fos_elastica:
                 rentDate: ~
                 returnDate: ~
                 user: ~
+        dealers:
+            persistence:
+                driver: orm
+                model: App\Entity\Dealers
+                provider: ~
+                finder: ~
+            properties:
+                id: ~
+                name: ~
+                surname: ~
+                email: ~
+        library:
+            persistence:
+                driver: orm
+                model: App\Entity\Library
+                provider: ~
+                finder: ~
+            properties:
+                id: ~
+                name: ~
+                city: ~
+                street: ~
+                books:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        name:
+                            type: text
         book:
             persistence:
                 driver: orm
@@ -46,32 +75,3 @@ fos_elastica:
                             type: text
                         street:
                             type: text
-        library:
-            persistence:
-                driver: orm
-                model: App\Entity\Library
-                provider: ~
-                finder: ~
-            properties:
-                id: ~
-                name: ~
-                city: ~
-                street: ~
-                books:
-                    type: object
-                    properties:
-                        id:
-                            type: integer
-                        name:
-                            type: text
-        dealers:
-            persistence:
-                driver: orm
-                model: App\Entity\Dealers
-                provider: ~
-                finder: ~
-            properties:
-                id: ~
-                name: ~
-                surname: ~
-                email: ~

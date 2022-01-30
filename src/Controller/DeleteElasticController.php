@@ -7,6 +7,7 @@ use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use FOS\ElasticaBundle\Index\IndexManager;
 use FOS\ElasticaBundle\Persister\ObjectPersisterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,7 @@ class DeleteElasticController extends AbstractController
         private PaginatedFinderInterface $finder,
         private ObjectPersisterInterface $post,
         private EntityManagerInterface $entityManager,
+        private IndexManager $indexManager,
     ) {
     }
 
@@ -28,18 +30,18 @@ class DeleteElasticController extends AbstractController
         if (count($data) < 10) {
             die ('brak danych - uzupełnij dane');
         }
+        dump($data);
         $startElastic10 = microtime();
         foreach ($data as $item) {
             $this->post->deleteOne($item);
         }
         $endElastic10 = microtime();
         $startMysql10 = microtime();
-        foreach ($data as $item) {
-            $this->entityManager->remove($item);
-        }
+//        foreach ($data as $item) {
+//            $this->entityManager->remove($item);
+//        }
         $this->entityManager->flush();
         $endMysql10 = microtime();
-
         $startElastic10 = explode(' ', $startElastic10);
         $endElastic10 = explode(' ', $endElastic10);
         $timeElastic10 = ($endElastic10[0]+$endElastic10[1])-($startElastic10[0]+$startElastic10[1]);
@@ -47,20 +49,18 @@ class DeleteElasticController extends AbstractController
         $startMysql10 = explode(' ', $startMysql10);
         $endMysql10 = explode(' ', $endMysql10);
         $timeSql10 = ($endMysql10[0]+$endMysql10[1])-($startMysql10[0]+$startMysql10[1]);
-
+        $this->indexManager->getIndex('user')->refresh();
+        sleep(20);
 //        dump('dla 10');
 //        dump($timeElastic10);
 //        dump($timeSql10);
 
-
+//        die('pp');
         $data = $this->finder->find('', 100);
         if (count($data) < 100) {
             die ('brak danych - uzupełnij dane');
         }
         $startElastic100 = microtime();
-        foreach ($data as $item) {
-            $this->post->deleteOne($item);
-        }
         $endElastic100 = microtime();
         $startMysql100 = microtime();
         foreach ($data as $item) {
@@ -68,7 +68,7 @@ class DeleteElasticController extends AbstractController
         }
         $this->entityManager->flush();
         $endMysql100 = microtime();
-
+//        die('t');
         $startElastic100 = explode(' ', $startElastic100);
         $endElastic100 = explode(' ', $endElastic100);
         $timeElastic100 = ($endElastic100[0]+$endElastic100[1])-($startElastic100[0]+$startElastic100[1]);
@@ -76,6 +76,8 @@ class DeleteElasticController extends AbstractController
         $startMysql100 = explode(' ', $startMysql100);
         $endMysql100 = explode(' ', $endMysql100);
         $timeSql100 = ($endMysql100[0]+$endMysql100[1])-($startMysql100[0]+$startMysql100[1]);
+        $this->indexManager->getIndex('user')->refresh();
+        sleep(20);
 //
 //        dump('dla 100');
 //        dump($timeElastic100);
@@ -104,6 +106,8 @@ class DeleteElasticController extends AbstractController
         $startMysql1000 = explode(' ', $startMysql1000);
         $endMysql1000 = explode(' ', $endMysql1000);
         $timeSql1000 = ($endMysql1000[0]+$endMysql1000[1])-($startMysql1000[0]+$startMysql1000[1]);
+        $this->indexManager->getIndex('user')->refresh();
+        sleep(20);
 
 //        dump('dla 1000');
 //        dump($timeElastic1000);
@@ -132,6 +136,8 @@ class DeleteElasticController extends AbstractController
         $startMysql10000 = explode(' ', $startMysql10000);
         $endMysql10000 = explode(' ', $endMysql10000);
         $timeSql10000 = ($endMysql10000[0]+$endMysql10000[1])-($startMysql10000[0]+$startMysql10000[1]);
+        $this->indexManager->getIndex('user')->refresh();
+        sleep(20);
 
 //        dump('dla 10000');
 //        dump($timeElastic10000);

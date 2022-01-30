@@ -42,7 +42,7 @@ services:
         arguments:
             - '@fos_elastica.finder.user'
             - '@fos_elastica.object_persister.user'
-    App\Controller\UpdateElasticController: #todo
+    App\Controller\UpdateElasticController:
         tags: [ 'controller.service_arguments' ]
         public: true
         arguments:
